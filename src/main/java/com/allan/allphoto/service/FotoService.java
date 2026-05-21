@@ -1,6 +1,8 @@
 package com.allan.allphoto.service;
 
+import com.allan.allphoto.model.Compra;
 import com.allan.allphoto.model.Foto;
+import com.allan.allphoto.repository.CompraRepository;
 import com.allan.allphoto.repository.FotoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class FotoService {
 
     private final FotoRepository FotoRepo;
+    private final CompraRepository compraRepo;
 
     public Foto salvar(Foto foto) {
         try {
@@ -53,5 +56,18 @@ public class FotoService {
         } else {
             FotoRepo.deleteById(id);
         }
+    }
+
+    public String download(Long id, Long ClienteId){
+        Foto foto = buscarPorId(id);
+
+        Optional<Compra> compra = compraRepo.findByFotoIdAndClienteId(id, ClienteId);
+        if (compra.isEmpty()) {
+            throw new RuntimeException("Compra não encontrada para esta foto e cliente");
+        }
+
+        if (!compra.get().getStatus().equals("PAGO")) {
+            throw new RuntimeException("Pagamento não confirmado para esta compra");
+        } return foto.getUrlOfc();
     }
 }

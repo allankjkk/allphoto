@@ -1,9 +1,6 @@
 package com.allan.allphoto.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
+@Getter
+@Setter
 @Table(name = "compras")
 
 public class Compra {
@@ -31,4 +30,4 @@ public class Compra {
     private LocalDateTime dataCompra;
     private String status;
 
-    }
+}
