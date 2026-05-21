@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Getter
-@Setter
 @Table(name = "compras")
 
 public class Compra {
@@ -19,11 +17,11 @@ public class Compra {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "foto_id")
     private Foto foto;
 

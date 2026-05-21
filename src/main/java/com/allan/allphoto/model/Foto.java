@@ -8,8 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Getter
-@Setter
 @Table(name = "fotos")
 public class Foto {
 
