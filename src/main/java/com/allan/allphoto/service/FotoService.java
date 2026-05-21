@@ -64,7 +64,7 @@ public class FotoService {
 
         Optional<Compra> compra = compraRepo.findByFotoIdAndClienteId(id, ClienteId);
         if (compra.isEmpty()) {
-            throw new RuntimeException("Compra não encontrada para esta foto e cliente");
+            throw new RuntimeException("Compra não encontrada");
         }
 
         if (!compra.get().getStatus().equals("PAGO")) {
