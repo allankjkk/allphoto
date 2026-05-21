@@ -43,6 +43,7 @@ public class ClienteService {
         if (cli.isEmpty()) {
             throw new RuntimeException("Cliente não encontrado");
         } else {
+            cliente.setId(id);
             return ClienteRepo.save(cliente);
         }
     }

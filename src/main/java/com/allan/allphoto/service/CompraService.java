@@ -43,6 +43,7 @@ public class CompraService {
         if (compraExistente.isEmpty()) {
             throw new RuntimeException("Compra não encontrada");
         } else {
+            compra.setId(id);
             return CompraRepo.save(compra);
         }
     }

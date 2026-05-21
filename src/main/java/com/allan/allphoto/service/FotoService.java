@@ -46,6 +46,7 @@ public class FotoService {
         if (fotoExistente.isEmpty()) {
             throw new RuntimeException("Foto não encontrada");
         } else {
+            foto.setId(id);
             return FotoRepo.save(foto);
         }
     }
