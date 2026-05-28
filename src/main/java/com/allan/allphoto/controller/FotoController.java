@@ -1,6 +1,6 @@
 package com.allan.allphoto.controller;
 
-import com.allan.allphoto.model.Foto;
+import com.allan.allphoto.DTO.FotoDTO;
 import com.allan.allphoto.service.FotoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +16,23 @@ public class FotoController {
     private final FotoService fotoService;
 
     @GetMapping
-    public List<Foto> listar() {
+    public List<FotoDTO> listar() {
         return fotoService.listar();
     }
 
     @PostMapping
-    public Foto salvar(@RequestBody Foto foto) {
-        return fotoService.salvar(foto);
+    public FotoDTO salvar(@RequestBody FotoDTO fotoDTO) {
+        return fotoService.salvar(fotoDTO);
     }
 
     @GetMapping("/{id}")
-    public Foto buscarPorId(@PathVariable Long id) {
+    public FotoDTO buscarPorId(@PathVariable Long id) {
         return fotoService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Foto atualizar(@PathVariable Long id, @RequestBody Foto foto) {
-        return fotoService.atualizar(id, foto);
+    public FotoDTO atualizar(@PathVariable Long id, @RequestBody FotoDTO fotoDTO) {
+        return fotoService.atualizar(id, fotoDTO);
     }
 
     @DeleteMapping("/{id}")

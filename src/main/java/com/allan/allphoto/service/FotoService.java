@@ -1,5 +1,7 @@
 package com.allan.allphoto.service;
 
+import com.allan.allphoto.DTO.FotoDTO;
+import com.allan.allphoto.mapper.FotoMapper;
 import com.allan.allphoto.model.Compra;
 import com.allan.allphoto.model.Foto;
 import com.allan.allphoto.repository.CompraRepository;
@@ -8,46 +10,45 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FotoService {
 
     private final FotoRepository FotoRepo;
+    private final FotoMapper FotoMap;
     private final CompraRepository compraRepo;
 
-    public Foto salvar(Foto foto) {
-        try {
-            return FotoRepo.save(foto);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar foto: ");
-        }
+    public FotoDTO salvar(FotoDTO fotoDTO) {
+        Foto foto = FotoMap.toEntity(fotoDTO);
+        return FotoMap.toDTO(FotoRepo.save(foto));
     }
 
-    public Foto buscarPorId(Long id) {
+    public FotoDTO buscarPorId(Long id) {
         Optional<Foto> foto = FotoRepo.findById(id);
         if (foto.isEmpty()) {
             throw new RuntimeException("Foto não encontrada");
         } else {
-            return foto.get();
+            return FotoMap.toDTO(foto.get());
         }
     }
 
-    public List<Foto> listar() {
-        try {
-            return FotoRepo.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar fotos: ");
-        }
+    public List<FotoDTO> listar() {
+        return FotoRepo.findAll()
+                .stream()
+                .map(FotoMap::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Foto atualizar(Long id, Foto foto) {
+    public FotoDTO atualizar(Long id, FotoDTO fotoDTO) {
         Optional<Foto> fotoExistente = FotoRepo.findById(id);
         if (fotoExistente.isEmpty()) {
             throw new RuntimeException("Foto não encontrada");
         } else {
+            Foto foto = FotoMap.toEntity(fotoDTO);
             foto.setId(id);
-            return FotoRepo.save(foto);
+            return FotoMap.toDTO(FotoRepo.save(foto));
         }
     }
 
@@ -59,16 +60,21 @@ public class FotoService {
         }
     }
 
-    public String download(Long id, Long ClienteId){
-        Foto foto = buscarPorId(id);
+    public String download(Long id, Long clienteId) {
+        Optional<Foto> foto = FotoRepo.findById(id);
+        if (foto.isEmpty()) {
+            throw new RuntimeException("Foto não encontrada");
+        }
 
-        Optional<Compra> compra = compraRepo.findByFotoIdAndClienteId(id, ClienteId);
+        Optional<Compra> compra = compraRepo.findByFotoIdAndClienteId(id, clienteId);
         if (compra.isEmpty()) {
-            throw new RuntimeException("Compra não encontrada");
+            throw new RuntimeException("Compra não encontrada para esta foto e cliente");
         }
 
         if (!compra.get().getStatus().equals("PAGO")) {
             throw new RuntimeException("Pagamento não confirmado para esta compra");
-        } return foto.getUrlOfc();
+        }
+
+        return foto.get().getUrlOfc();
     }
 }

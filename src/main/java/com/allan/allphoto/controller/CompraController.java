@@ -1,6 +1,6 @@
 package com.allan.allphoto.controller;
 
-import com.allan.allphoto.model.Compra;
+import com.allan.allphoto.DTO.CompraDTO;
 import com.allan.allphoto.service.CompraService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +16,23 @@ public class CompraController {
     private final CompraService compraService;
 
     @GetMapping
-    public List<Compra> listar() {
+    public List<CompraDTO> listar() {
         return compraService.listar();
     }
 
     @PostMapping
-    public Compra salvar(@RequestBody Compra compra) {
-        return compraService.salvar(compra);
+    public CompraDTO salvar(@RequestBody CompraDTO compraDTO) {
+        return compraService.salvar(compraDTO);
     }
 
     @GetMapping("/{id}")
-    public Compra buscarPorId(@PathVariable Long id) {
+    public CompraDTO buscarPorId(@PathVariable Long id) {
         return compraService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Compra atualizar(@PathVariable Long id, @RequestBody Compra compra) {
-        return compraService.atualizar(id, compra);
+    public CompraDTO atualizar(@PathVariable Long id, @RequestBody CompraDTO compraDTO) {
+        return compraService.atualizar(id, compraDTO);
     }
 
     @DeleteMapping("/{id}")

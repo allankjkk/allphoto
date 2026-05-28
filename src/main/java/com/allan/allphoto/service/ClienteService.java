@@ -1,55 +1,56 @@
 package com.allan.allphoto.service;
 
+import com.allan.allphoto.DTO.ClienteDTO;
+import com.allan.allphoto.mapper.ClienteMapper;
 import com.allan.allphoto.model.Cliente;
 import com.allan.allphoto.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java .util.Optional;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository ClienteRepo;
+    private final ClienteMapper ClienteMap;
 
-    public Cliente salvar(Cliente cliente){
-        try {
-            return ClienteRepo.save(cliente);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar cliente: ");
-        }
+    public ClienteDTO salvar(ClienteDTO clienteDTO) {
+        Cliente cliente = ClienteMap.toEntity(clienteDTO);
+        return ClienteMap.toDTO(ClienteRepo.save(cliente));
     }
 
-    public Cliente buscarPorId(Long Id) {
-        Optional<Cliente> cli = ClienteRepo.findById(Id);
-        if (cli.isEmpty()) {
-            throw new RuntimeException("Cliente não encontrado");
-        } else {
-            return cli.get();
-        }
-    }
-
-    public List<Cliente> listar(){
-        try {
-            return ClienteRepo.findAll();
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao listar clientes: ");
-        }
-    }
-
-    public Cliente atualizar(Long id, Cliente cliente){
+    public ClienteDTO buscarPorId(Long id) {
         Optional<Cliente> cli = ClienteRepo.findById(id);
         if (cli.isEmpty()) {
             throw new RuntimeException("Cliente não encontrado");
         } else {
-            cliente.setId(id);
-            return ClienteRepo.save(cliente);
+            return ClienteMap.toDTO(cli.get());
         }
     }
 
-    public void deletar(Long id){
-        if(!ClienteRepo.existsById(id)){
+    public List<ClienteDTO> listar() {
+        return ClienteRepo.findAll()
+                .stream()
+                .map(ClienteMap::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public ClienteDTO atualizar(Long id, ClienteDTO clienteDTO) {
+        Optional<Cliente> cli = ClienteRepo.findById(id);
+        if (cli.isEmpty()) {
+            throw new RuntimeException("Cliente não encontrado");
+        } else {
+            Cliente cliente = ClienteMap.toEntity(clienteDTO);
+            cliente.setId(id);
+            return ClienteMap.toDTO(ClienteRepo.save(cliente));
+        }
+    }
+
+    public void deletar(Long id) {
+        if (!ClienteRepo.existsById(id)) {
             throw new RuntimeException("Cliente não encontrado");
         } else {
             ClienteRepo.deleteById(id);
