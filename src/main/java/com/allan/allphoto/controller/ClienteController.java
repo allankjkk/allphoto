@@ -2,6 +2,7 @@ package com.allan.allphoto.controller;
 
 import com.allan.allphoto.DTO.ClienteDTO;
 import com.allan.allphoto.service.ClienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteDTO salvar(@RequestBody ClienteDTO clienteDTO) {
+    public ClienteDTO salvar(@Valid @RequestBody ClienteDTO clienteDTO) {
         return clienteService.salvar(clienteDTO);
     }
 
@@ -31,7 +32,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ClienteDTO atualizar(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
+    public ClienteDTO atualizar(@Valid @PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
         return clienteService.atualizar(id, clienteDTO);
     }
 
