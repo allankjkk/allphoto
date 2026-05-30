@@ -1,6 +1,8 @@
 package com.allan.allphoto.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
@@ -15,7 +17,13 @@ public class Cliente{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
+
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "O email inválido")
     private String email;
+
+    @NotBlank(message = "A senha é obrigatória")
     private String senha;
 }
