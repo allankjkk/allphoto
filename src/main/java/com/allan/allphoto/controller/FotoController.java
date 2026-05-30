@@ -2,6 +2,7 @@ package com.allan.allphoto.controller;
 
 import com.allan.allphoto.DTO.FotoDTO;
 import com.allan.allphoto.service.FotoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class FotoController {
     }
 
     @PostMapping
-    public FotoDTO salvar(@RequestBody FotoDTO fotoDTO) {
+    public FotoDTO salvar(@Valid @RequestBody FotoDTO fotoDTO) {
         return fotoService.salvar(fotoDTO);
     }
 
@@ -31,7 +32,7 @@ public class FotoController {
     }
 
     @PutMapping("/{id}")
-    public FotoDTO atualizar(@PathVariable Long id, @RequestBody FotoDTO fotoDTO) {
+    public FotoDTO atualizar(@Valid @PathVariable Long id, @RequestBody FotoDTO fotoDTO) {
         return fotoService.atualizar(id, fotoDTO);
     }
 

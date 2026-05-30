@@ -2,6 +2,7 @@ package com.allan.allphoto.controller;
 
 import com.allan.allphoto.DTO.CompraDTO;
 import com.allan.allphoto.service.CompraService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class CompraController {
     }
 
     @PostMapping
-    public CompraDTO salvar(@RequestBody CompraDTO compraDTO) {
+    public CompraDTO salvar(@Valid @RequestBody CompraDTO compraDTO) {
         return compraService.salvar(compraDTO);
     }
 
@@ -31,7 +32,7 @@ public class CompraController {
     }
 
     @PutMapping("/{id}")
-    public CompraDTO atualizar(@PathVariable Long id, @RequestBody CompraDTO compraDTO) {
+    public CompraDTO atualizar(@Valid @PathVariable Long id, @RequestBody CompraDTO compraDTO) {
         return compraService.atualizar(id, compraDTO);
     }
 
