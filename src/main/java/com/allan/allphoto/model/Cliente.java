@@ -24,6 +24,5 @@ public class Cliente{
     @Email(message = "O email inválido")
     private String email;
 
-    @NotBlank(message = "A senha é obrigatória")
     private String senha;
 }

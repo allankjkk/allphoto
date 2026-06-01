@@ -1,5 +1,7 @@
 package com.allan.allphoto.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.allan.allphoto.DTO.FotoDTO;
 import com.allan.allphoto.mapper.FotoMapper;
 import com.allan.allphoto.model.Compra;
@@ -76,5 +78,17 @@ public class FotoService {
         }
 
         return foto.get().getUrlOfc();
+    }
+
+    public List<FotoDTO> buscarPorFaixaDePreco(Double precoMin, Double precoMax) {
+        return FotoRepo.faixaDePreco(precoMin, precoMax)
+                .stream()
+                .map(FotoMap::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Page<FotoDTO> listarPaginado(Pageable pageable) {
+        return FotoRepo.findAll(pageable)
+                .map(FotoMap::toDTO);
     }
 }

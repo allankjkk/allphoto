@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -45,5 +47,16 @@ public class FotoController {
     @GetMapping("/{id}/download")
     public String download(@PathVariable Long id, @RequestParam Long clienteId) {
         return fotoService.download(id, clienteId);
+    }
+
+    @GetMapping("/faixa-de-preco")
+    public List<FotoDTO> buscarPorFaixaDePreco(@RequestParam Double precoMin,
+                                               @RequestParam Double precoMax) {
+        return fotoService.buscarPorFaixaDePreco(precoMin, precoMax);
+    }
+
+    @GetMapping("/paginado")
+    public Page<FotoDTO> listarPaginado(Pageable pageable) {
+        return fotoService.listarPaginado(pageable);
     }
 }
